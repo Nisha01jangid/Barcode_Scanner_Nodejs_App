@@ -41,7 +41,7 @@ const products = {
 };
 
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('product_table');
 });
 
 app.post('/scan', (req, res) => {

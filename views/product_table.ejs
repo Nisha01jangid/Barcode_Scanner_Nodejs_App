@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Barcode Scanner</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Barcode Scanner</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Barcode Number</th>
+            </tr>
+        </thead>
+        <tbody id="barcodeList">
+            <!-- Scanned barcode numbers will be added here -->
+        </tbody>
+    </table>
+    <p>Total Price: $<span id="totalPrice">0.00</span></p>
+
+    <script>
+        const stopBarcode = "STOP_SCAN";
+        let totalPrice = 0;
+
+        // Function to add a new row with the barcode number
+        function addBarcodeToTable(scannedBarcode) {
+            const table = document.getElementById("barcodeList");
+            const newRow = table.insertRow();
+            const cell = newRow.insertCell(0);
+            cell.innerHTML = scannedBarcode;
+            totalPrice += parseFloat(scannedBarcode); // Assuming barcode value is a price
+            updateTotalPrice();
+        }
+
+        // Function to update the total price
+        function updateTotalPrice() {
+            document.getElementById("totalPrice").textContent = totalPrice.toFixed(2);
+        }
+
+        // Function to check if the scanned barcode matches the stopBarcode
+        function checkBarcode(scannedBarcode) {
+            return scannedBarcode === stopBarcode;
+        }
+
+        // Function to handle barcode scanning
+        function handleBarcodeScanning(scannedBarcode) {
+            if (checkBarcode(scannedBarcode)) {
+                alert("Scanning stopped.");
+                return;
+            }
+            addBarcodeToTable(scannedBarcode);
+        }
+
+        // Simulate barcode scanning (you can replace this with a real scanning event)
+        function simulateBarcodeScanning() {
+            // Simulate scanning by setting a timeout
+            setTimeout(function() {
+                const scannedBarcode = prompt("Scan a barcode (or enter 'STOP_SCAN' to stop):");
+                if (scannedBarcode !== null) {
+                    handleBarcodeScanning(scannedBarcode);
+                    simulateBarcodeScanning(); // Continue scanning
+                }
+            }, 1000); // Change the timeout duration as needed
+        }
+
+        // Start the simulation
+        simulateBarcodeScanning();
+    </script>
+</body>
+</html>
